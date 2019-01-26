@@ -5,7 +5,12 @@ import { CustomInput } from 'reactstrap';
 class ManageBrand extends Component {
     state= { brandList: [], AddBrandImage: 'Pilih Gambar', EditBrandImage: 'Pilih Gambar', selectedEditBrandId: 0 }
     componentDidMount() {
-        axios.get('https://eui-api-yandreyahoo123.herokuapp.com/brand/getlistbrand')
+
+        // api ke heroku
+        // axios.get('https://eui-api-yandreyahoo123.herokuapp.com/brand/getlistbrand')
+
+        // axios ke local untuk mempersingkat koding
+        axios.get('http://localhost:1998/brand/getlistbrand')
         .then((res) => {
             this.setState({ brandList: res.data })
         })
@@ -28,7 +33,11 @@ class ManageBrand extends Component {
             }
             formData.append('data', JSON.stringify(data))
 
-            axios.post("https://eui-api-yandreyahoo123.herokuapp.com/brand/addbrand", formData, headers)
+                // api ke heroku
+                // axios.get("https://eui-api-yandreyahoo123.herokuapp.com/brand/addbrand", formData, headers)
+
+                // axios ke local untuk mempersingkat koding
+            axios.post("http://localhost:1998/brand/addbrand", formData, headers)
             .then((res) => {
                 alert("Add Brand Success")
                 this.setState({ brandList: res.data })
@@ -44,7 +53,12 @@ class ManageBrand extends Component {
 
     onBtnDeleteClick = (id) => {
         if(window.confirm('Are you sure to delete?')) {
-            axios.delete('https://eui-api-yandreyahoo123.herokuapp.com/brand/deletebrand/' + id)
+            
+                // api ke heroku
+            // axios.post('https://eui-api-yandreyahoo123.herokuapp.com/brand/deletebrand/' + id)
+
+            // axios ke local untuk mempersingkat koding
+             axios.delete('http://localhost:1998/brand/deletebrand/' + id)
             .then((res) => {
                 alert('Delete Success');
                 this.setState({ brandList: res.data })
@@ -72,7 +86,12 @@ class ManageBrand extends Component {
         }
         formData.append('data', JSON.stringify(data))
 
-        axios.put("https://eui-api-yandreyahoo123.herokuapp.com/brand/editbrand/" + id, formData, headers)
+        // api ke heroku
+        // axios.post("https://eui-api-yandreyahoo123.herokuapp.com/brand/editbrand/" + id, formData, headers)
+
+            // axios ke local untuk mempersingkat koding
+        axios.put("http://localhost:1998/brand/editbrand/" + id, formData, headers)
+
         .then((res) => {
             alert("Edit Brand Success")
             this.setState({ brandList: res.data, selectedEditBrandId: 0 })
@@ -117,7 +136,12 @@ class ManageBrand extends Component {
                 <tr>
                     <td>{item.id}</td>
                     <td>{item.nama}</td>
-                    <td><img src={`https://eui-api-yandreyahoo123.herokuapp.com${item.image}`} alt={item.nama} width={100} /></td>
+                    {/* axios ke heroku */}
+                    {/* <td><img src={`https://eui-api-yandreyahoo123.herokuapp.com${item.image}`} alt={item.nama} width={100} /></td> */}
+
+                    {/* axios ke local untuk mempersingkat koding */}
+                    <td><img src={`http://localhost:1998${item.image}`} alt={item.nama} width={100} /></td>
+                    
                     <td><input type="button" class="btn btn-primary" value="Edit" onClick={() => this.setState({selectedEditBrandId:item.id})} /></td>
                     <td><input type="button" class="btn btn-danger" value="Delete" onClick={() => this.onBtnDeleteClick(item.id)} /></td>
                 </tr>
